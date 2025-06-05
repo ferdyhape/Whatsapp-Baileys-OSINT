@@ -66,7 +66,7 @@ Built with Node.js and designed to be easy to customize and extend.
    npm start
    ```
 
-7. **Open your browser and go to `http://localhost:8000/scan`**
+7. **Open your browser and go to `http://localhost:3000/scan` (or the port you configured)**
 
    - Scan the QR code with your WhatsApp mobile app to connect the bot.
 
