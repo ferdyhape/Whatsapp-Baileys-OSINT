@@ -1,7 +1,7 @@
 {
   "name": "whatsapp-baileys-osint-bot",
   "version": "1.0.0",
-  "description": "A WhatsApp bot using Baileys for OSINT tasks",
+  "description": "A WhatsApp bot using Baileys for OSINT simple tasks",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -10,7 +10,13 @@
     "dev": "nodemon index.js"
   },
   "keywords": [
-    "whatsapp"
+    "whatsapp",
+    "baileys",
+    "osint",
+    "bot",
+    "nodejs",
+    "express",
+    "socket.io"
   ],
   "license": "ISC",
   "dependencies": {
