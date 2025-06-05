@@ -1,30 +1,36 @@
-require("dotenv").config(); // <-- Tambahkan ini di baris paling atas
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const http = require("http");
-const socketIo = require("socket.io");
-const path = require("path");
-const webRoutes = require("./routes/webRoute"); // Import the routes
+import dotenv from "dotenv";
+dotenv.config();
 
-const {
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import http from "http";
+import { Server as SocketIO } from "socket.io";
+import path from "path";
+import { fileURLToPath } from "url";
+import webRoutes from "./routes/webRoute.js";
+
+import {
   connectToWhatsApp,
   setSocket,
   isConnected,
   getQR,
   updateQR,
-} = require("./controllers/whatsappController");
+} from "./controllers/whatsappController.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new SocketIO(server);
 const port = process.env.PORT;
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/assets", express.static(path.join(__dirname, "client/assets")));
-app.use("/", webRoutes); // Use the routes
+app.use("/", webRoutes);
 
 io.on("connection", (socket) => {
   setSocket(socket);
@@ -35,7 +41,6 @@ io.on("connection", (socket) => {
   }
 });
 
-// Start the server
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   connectToWhatsApp();

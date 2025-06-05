@@ -1,3 +1,5 @@
+import baileys from "@whiskeysockets/baileys";
+
 const {
   default: makeWASocket,
   DisconnectReason,
@@ -5,12 +7,13 @@ const {
   isJidBroadcast,
   makeInMemoryStore,
   useMultiFileAuthState,
-} = require("@whiskeysockets/baileys");
-const { Boom } = require("@hapi/boom");
-const qrcode = require("qrcode");
-const fs = require("fs");
-const pino = require("pino");
-const googleOsintController = require("./googleOsintController");
+} = baileys;
+
+import { Boom } from "@hapi/boom";
+import qrcode from "qrcode";
+import fs from "fs";
+import pino from "pino";
+import googleOsintController from "./googleOsintController.js";
 
 const store = makeInMemoryStore({
   logger: pino().child({ level: "silent", stream: "store" }),
@@ -20,11 +23,11 @@ let sock;
 let qr;
 let soket;
 
-const connectToWhatsApp = async () => {
+export const connectToWhatsApp = async () => {
   const { state, saveCreds } = await useMultiFileAuthState("baileys_auth_info");
   const { version } = await fetchLatestBaileysVersion();
   sock = makeWASocket({
-    printQRInTerminal: true,
+    printQRInTerminal: false,
     auth: state,
     logger: pino({ level: "silent" }),
     version,
@@ -98,7 +101,6 @@ const connectToWhatsApp = async () => {
       if (trigger) {
         console.log(`🔍 Menerima permintaan OSINT: ${pesan}`);
 
-        // Extract keyword dalam tanda kutip jika ada
         const regex = /"(.*?)"/;
         const match = pesan.match(regex);
 
@@ -106,7 +108,6 @@ const connectToWhatsApp = async () => {
         if (match && match[1]) {
           query = match[1].trim();
         } else {
-          // Jika tidak ada tanda kutip, ambil substring setelah trigger
           query = pesan.substring(trigger.length).trim();
         }
 
@@ -117,7 +118,6 @@ const connectToWhatsApp = async () => {
           return;
         }
 
-        // Kirim respons awal dulu
         await sock.sendMessage(
           noWa,
           {
@@ -146,9 +146,9 @@ const deleteAuthData = () => {
   }
 };
 
-const isConnected = () => !!sock?.user;
+export const isConnected = () => !!sock?.user;
 
-const updateQR = (data) => {
+export const updateQR = (data) => {
   switch (data) {
     case "qr":
       qrcode.toDataURL(qr, (err, url) => {
@@ -173,7 +173,7 @@ const updateQR = (data) => {
   }
 };
 
-const sendMessage = async (req, res) => {
+export const sendMessage = async (req, res) => {
   const pesankirim = req.body.message;
   const number = req.body.number;
 
@@ -228,17 +228,8 @@ const sendMessage = async (req, res) => {
   }
 };
 
-const getQR = () => qr;
+export const getQR = () => qr;
 
-const setSocket = (socket) => {
+export const setSocket = (socket) => {
   soket = socket;
-};
-
-module.exports = {
-  connectToWhatsApp,
-  sendMessage,
-  updateQR,
-  isConnected,
-  setSocket,
-  getQR,
 };
