@@ -2,108 +2,59 @@
 <html lang="en">
 
 <head>
-  <title>WA API</title>
-  <meta name="description" content="WhatsApp Api otomatis.">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scan - WhatsApp Baileys OSINT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      background: rgb(200, 220, 224);
-    }
-
-    .form {
-      font-family: Helvetica, sans-serif;
-      max-width: 400px;
-      margin: 100px auto;
-      text-align: center;
-      padding: 16px;
-      background: #ffffff;
-    }
-
-    .form h1 {
-      background: #03773f;
-      padding: 20px 0;
-      font-weight: 300;
-      text-align: center;
-      color: #fff;
-      margin: -16px -16px 16px -16px;
-      font-size: 25px;
-    }
-
-    .form input[type="text"],
-    .form input[type="url"] {
-      box-sizing: border-box;
-      width: 100%;
-      background: #fff;
-      margin-bottom: 4%;
-      border: 1px solid #ccc;
-      padding: 4%;
-      font-size: 17px;
-      color: rgb(9, 61, 125);
-    }
-
-    .form input[type="text"]:focus,
-    .form input[type="url"]:focus {
-      box-shadow: 0 0 5px #5868bf;
-      padding: 4%;
-      border: 1px solid #5868bf;
-    }
-
-    .form button {
-      box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      width: 180px;
-      margin: 0 auto;
-      padding: 3%;
-      background: #0853b6;
-      border: none;
-      border-radius: 3px;
-      font-size: 17px;
-      border-top-style: none;
-      border-right-style: none;
-      border-left-style: none;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .form button:hover {
-      background: rgba(88, 104, 191, 0.5);
-    }
-
-    .qrcode {
-      padding: 16px;
-      margin-bottom: 30px;
-    }
-
-    .qrcode img {
-      margin: 0 auto;
-      box-shadow: 0 0 10px rgba(67, 67, 68, 0.25);
-      padding: 4px;
+      font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
   </style>
 </head>
 
-<body>
+<body class="bg-gradient-to-r from-cyan-100 to-blue-100 min-h-screen flex items-center justify-center">
 
-  <div class="form">
-    <h1>WhatsApp API QR</h1>
-    <div id="qrcode-container">
-      <img src="./assets/loader.gif" alt="loading" id="qrcode" style="width: 250px;">
-    </div>
-    <div class="card">
-      <div class="title">Panduan</div>
-      <div class="body">
-        <p>
-          <li>Scan kode QR berikut dengan aplikasi WhatsApp anda, sebagaimana Whatsapp Web biasanya.</li>
-          <li>Sesi Whatsapp Web yang aktif akan keluar, diganti dengan server ini.</li>
-          <li><b>Gunakan dengan bijak.</b></li>
-        </p>
+  <main class="bg-white shadow-xl rounded-2xl max-w-lg w-full text-gray-700 font-sans">
+
+    <header class="bg-green-700 text-white text-2xl font-semibold py-4 rounded-t-2xl text-center">
+      Scan WhatsApp QR
+    </header>
+
+    <section class="p-6 space-y-6 text-base">
+      <!-- QR Code -->
+      <div class="flex justify-center">
+        <img src="./assets/loader.gif" alt="loading" id="qrcode" class="w-60 h-auto shadow-md rounded-lg" />
       </div>
-    </div>
 
-  </div>
+      <!-- Steps -->
+      <div class="space-y-3">
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>1.</div>
+          <div>Open <strong>WhatsApp</strong> on your phone and go to <strong>Linked Devices</strong>.</div>
+        </div>
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>2.</div>
+          <div>Tap <strong>“Link a Device”</strong> and scan the QR code shown above.</div>
+        </div>
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>3.</div>
+          <div>This will connect this bot as your active WhatsApp Web session.</div>
+        </div>
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>4.</div>
+          <div><span class="text-red-600 font-semibold">Use this service responsibly.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-sm text-center text-gray-400 py-4 border-t">
+      Developed by <a href="https://github.com/ferdyhape" target="_blank"
+        class="underline hover:text-green-700">ferdyhape</a>
+    </footer>
+
+  </main>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js" crossorigin="anonymous"></script>
   <script>
     const qrcode = document.getElementById("qrcode");
@@ -113,6 +64,7 @@
       qrcode.setAttribute("src", src);
       qrcode.setAttribute("alt", "qrcode");
     });
+
     socket.on("qrstatus", src => {
       qrcode.setAttribute("src", src);
       qrcode.setAttribute("alt", "loading");
@@ -120,9 +72,9 @@
 
     socket.on("log", log => {
       console.log(log);
-    })
-
+    });
   </script>
+
 </body>
 
 </html>

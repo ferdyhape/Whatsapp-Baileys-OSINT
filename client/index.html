@@ -2,16 +2,62 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<title>Waptis</title>
-	<meta name="description" content="Kirim WhatsApp secara otomatis.">
-	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-	<link rel="icon" type="image/svg" href="./assets/icon.svg" />
-	<link rel="stylesheet" type="text/css" href="./assets/main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Usage - WhatsApp Baileys OSINT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+  </style>
 </head>
 
-<body>
-	I'm Bot
+<body class="bg-gradient-to-r from-cyan-100 to-blue-100 min-h-screen flex items-center justify-center">
+
+  <main class="bg-white shadow-xl rounded-2xl max-w-lg w-full text-gray-700 font-sans">
+
+    <header class="bg-green-700 text-white text-2xl font-semibold py-4 rounded-t-2xl text-center">
+      Usage
+    </header>
+
+    <section class="p-6 space-y-6 text-base">
+      <div class="space-y-3">
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>1.</div>
+          <div>Visit <a href="http://localhost:3000/scan" target="_blank"
+              class="text-blue-600 hover:underline"><strong>http://localhost:3000/scan</strong></a>
+            and scan the QR code with your WhatsApp<strong> (adjust the URL if running on a different port)</strong>
+          </div>
+        </div>
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>2.</div>
+          <div>Send messages containing trigger words like <strong>search</strong>, <strong>find</strong>,
+            <strong>cari</strong>, <strong>telusuri</strong>, or <strong>lihat</strong> followed by your query.
+          </div>
+        </div>
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>3.</div>
+          <div>Wrap your query in <strong>quotation marks</strong> for more specific results.</div>
+        </div>
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>4.</div>
+          <div>Example: <span class="font-semibold">search "Jane Doe"</span></div>
+        </div>
+        <div class="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <div>5.</div>
+          <div>The bot replies with results from Google Custom Search.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-sm text-center text-gray-400 py-4 border-t">
+      Developed by <a href="https://github.com/ferdyhape" target="_blank"
+        class="underline hover:text-green-700">ferdyhape</a>
+    </footer>
+
+  </main>
+
 </body>
 
 </html>

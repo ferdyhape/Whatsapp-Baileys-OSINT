@@ -1,1 +1,1 @@
-export const triggers = ["carikan", "cari", "info"];
+export const triggers = ["search", "find", "cari", "telusuri", "lihat"];
