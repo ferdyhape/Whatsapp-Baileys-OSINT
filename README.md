@@ -1,47 +1,82 @@
-# WABot Gemini
+# WhatsApp Baileys OSINT Bot
 
 ## :open_book: Description
 
-Integrate WhatsApp Bot with Gemini API. This project is a simple WhatsApp bot that can interact with the Gemini API. This project is built using Node.js and whiskeysockets/baileys library.
+A simple WhatsApp bot using the `@whiskeysockets/baileys` library for OSINT (Open Source Intelligence) tasks.  
+This bot listens for specific trigger keywords in messages and performs Google Custom Search queries to provide relevant information directly on WhatsApp.
 
-:smile: Actually this is not a meaningful project, it's just that I was bored and wanted to make a bot on whatsapp. So, I made this project.
+Built with Node.js and designed to be easy to customize and extend.
+
+---
 
 ## :hammer_and_wrench: Requirements
 
 - Node.js v18+
+- Google Custom Search API Key
+- Google Custom Search Engine (CSE) ID
+
+---
 
 ## :rocket: How to Install
 
-1. Create API Key on [aistudio](https://aistudio.google.com/app/apikey)
-2. Clone this repository
+1. **Create Google API Key**
+
+   - Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+   - Create or select a project.
+   - Navigate to **APIs & Services > Credentials**.
+   - Click **Create Credentials > API Key**.
+   - Copy your API key.
+
+2. **Create Custom Search Engine (CSE)**
+
+   - Go to [Google Custom Search Engine](https://cse.google.com/cse/all).
+   - Click **Add**.
+   - For "Sites to search," you can enter `www.google.com` or leave it blank to search the entire web (enable "Search the entire web" option).
+   - Create the CSE and note the **Search Engine ID**.
+
+3. **Clone this repository**
+
    ```bash
-    git clone https://github.com/ferdyhape/Whatsapp-Bot-Gemini-Baileys.git
+   git clone https://github.com/ferdyhape/whatsapp-baileys-osint-bot.git
    ```
-3. Go to the project directory and install the dependencies
+
+4. **Go to the project directory and install dependencies**
+
    ```bash
-    cd Whatsapp-Bot-Gemini-Baileys
-    npm install
+   cd whatsapp-baileys-osint-bot
+   npm install
    ```
-4. Copy `.env.example` to `.env` and paste your API Key to `GEMINI_API_KEY`
+
+5. **Copy `.env.example` to `.env` and add your credentials**
+
    ```bash
-    cp .env.example .env
+   cp .env.example .env
    ```
-   ```env
-    GEMINI_API_KEY = "YOUR_API_KEY"
+
+   Edit .env file:
+
    ```
-5. Run the project
+   GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY
+   GOOGLE_CSE_ID=YOUR_CUSTOM_SEARCH_ENGINE_ID
+   ```
+
+6. **Run the bot**
+
    ```bash
-    npm start
+   npm start
    ```
-6. Open your browser and go to `http://localhost:8000/scan` to scan the QR Code with your WhatsApp app (this device will integrate with the bot)
-7. After scanning the QR Code, your whatsapp bot is ready to use
-<!-- Kirim pesan ke bot WhatsApp Anda dengan pesan yang include `/bot` ke whatsapp yang sebelumnya telah di scan qr -->
-8. Send a message to your WhatsApp bot with a message that includes `/bot` to the WhatsApp that has been scanned previously with the QR Code, for example:
-   ```bash
-    hello /bot, how are you?
-   ```
-9. Wait a moment, the bot will reply to your message.
-10. Enjoy!
+
+7. **Open your browser and go to `http://localhost:8000/scan`**
+
+   - Scan the QR code with your WhatsApp mobile app to connect the bot.
+
+8. **Send messages to your WhatsApp number**
+
+   - Use trigger keywords like carikan, cari, or info followed by a query. (you can customize these keywords in the `config/triggers.js` file)
+   - Example: `carikan data "John Doe"` (query in quotes)
+   - The bot will reply with search results from Google Custom Search.
+
+9. Enjoy!
 
 ## :man: About Creator
 
