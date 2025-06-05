@@ -10,6 +10,7 @@ const {
 } = baileys;
 
 import { Boom } from "@hapi/boom";
+import logger from "../services/loggerService.js";
 import { triggers } from "../config/triggers.js";
 import qrcode from "qrcode";
 import fs from "fs";
@@ -43,38 +44,37 @@ export const connectToWhatsApp = async () => {
       const reason = new Boom(lastDisconnect.error).output.statusCode;
       switch (reason) {
         case DisconnectReason.badSession:
-          console.log(`Bad Session File, Please Delete session and Scan Again`);
+          logger.warn(`Bad Session File, Please Delete session and Scan Again`);
           deleteAuthData();
           break;
         case DisconnectReason.connectionClosed:
         case DisconnectReason.connectionLost:
         case DisconnectReason.restartRequired:
         case DisconnectReason.timedOut:
-          console.log("Connection closed, reconnecting....");
+          logger.warn("Connection closed, reconnecting....");
           connectToWhatsApp();
           break;
         case DisconnectReason.connectionReplaced:
-          console.log(
+          logger.warn(
             "Connection Replaced, Please Close Current Session First"
           );
           deleteAuthData();
           connectToWhatsApp();
           break;
         case DisconnectReason.loggedOut:
-          console.log(
+          logger.warn(
             `Device Logged Out, Please Delete session and Scan Again.`
           );
           deleteAuthData();
           connectToWhatsApp();
           break;
         default:
-          console.log(
+          logger.error(
             `Unknown DisconnectReason: ${reason}|${lastDisconnect.error}`
           );
       }
     } else if (connection === "open") {
-      console.log("opened connection");
-      return;
+      logger.info("Conncection opened successfully!");
     }
     if (update.qr) {
       qr = update.qr;
@@ -98,7 +98,7 @@ export const connectToWhatsApp = async () => {
       const trigger = triggers.find((t) => lowerPesan.startsWith(t));
 
       if (trigger) {
-        console.log(`🔍 Received request with query ${pesan}`);
+        logger.info(`🔍 Received request with query ${pesan}`);
 
         const regex = /"(.*?)"/;
         const match = pesan.match(regex);
@@ -139,9 +139,9 @@ export const connectToWhatsApp = async () => {
 const deleteAuthData = () => {
   try {
     fs.rmSync("baileys_auth_info", { recursive: true, force: true });
-    console.log("Authentication data deleted.");
+    logger.info("Authentication data deleted.");
   } catch (error) {
-    console.error("Error deleting authentication data:", error);
+    logger.error("Error deleting authentication data:", error);
   }
 };
 
@@ -157,11 +157,11 @@ export const updateQR = (data) => {
       break;
     case "connected":
       soket?.emit("qrstatus", "./assets/check.svg");
-      soket?.emit("log", "WhatsApp terhubung!");
+      soket?.emit("log", "WhatsApp is connected!");
       break;
     case "qrscanned":
       soket?.emit("qrstatus", "./assets/check.svg");
-      soket?.emit("log", "QR Code Telah discan!");
+      soket?.emit("log", "Qr Code has been scanned, please wait!");
       break;
     case "loading":
       soket?.emit("qrstatus", "./assets/loader.gif");
@@ -180,7 +180,7 @@ export const sendMessage = async (req, res) => {
     if (!number) {
       return res.status(500).json({
         status: false,
-        response: "Nomor WA belum tidak disertakan!",
+        response: "Phone number is required.",
       });
     }
 
@@ -189,7 +189,7 @@ export const sendMessage = async (req, res) => {
     if (!isConnected()) {
       return res.status(500).json({
         status: false,
-        response: `WhatsApp belum terhubung.`,
+        response: `WhatsApp is not connected. Please wait until the QR code is scanned.`,
       });
     }
 
@@ -198,7 +198,7 @@ export const sendMessage = async (req, res) => {
     if (!exists?.jid && (!exists || !exists[0]?.jid)) {
       return res.status(500).json({
         status: false,
-        response: `Nomor ${number} tidak terdaftar.`,
+        response: `Phone number ${number} is not registered on WhatsApp.`,
       });
     }
 
@@ -210,14 +210,14 @@ export const sendMessage = async (req, res) => {
       });
       return res.status(200).json({
         status: true,
-        response: "Pesan gambar terkirim.",
+        response: "Mesage with image sent successfully.",
       });
     }
 
     await sock.sendMessage(exists.jid || exists[0].jid, { text: pesankirim });
     return res.status(200).json({
       status: true,
-      response: "Pesan terkirim.",
+      response: "Message sent successfully.",
     });
   } catch (error) {
     return res.status(500).json({

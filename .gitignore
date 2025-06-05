@@ -1,3 +1,4 @@
 node_modules
 .env
 baileys_auth_info
+logs/
