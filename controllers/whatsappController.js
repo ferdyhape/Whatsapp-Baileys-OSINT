@@ -10,6 +10,7 @@ const {
 } = baileys;
 
 import { Boom } from "@hapi/boom";
+import { triggers } from "../config/triggers.js";
 import qrcode from "qrcode";
 import fs from "fs";
 import pino from "pino";
@@ -94,12 +95,10 @@ export const connectToWhatsApp = async () => {
       await sock.readMessages([messages[0].key]);
 
       const lowerPesan = pesan.toLowerCase();
-      const trigger = ["carikan", "cari", "info"].find((t) =>
-        lowerPesan.startsWith(t)
-      );
+      const trigger = triggers.find((t) => lowerPesan.startsWith(t));
 
       if (trigger) {
-        console.log(`🔍 Menerima permintaan OSINT: ${pesan}`);
+        console.log(`🔍 Received request with query ${pesan}`);
 
         const regex = /"(.*?)"/;
         const match = pesan.match(regex);
@@ -113,7 +112,7 @@ export const connectToWhatsApp = async () => {
 
         if (!query) {
           await sock.sendMessage(noWa, {
-            text: 'Masukkan kata kunci setelah perintah.\nContoh: `carikan "Ferdy Hahan Pradana"`',
+            text: "Enter the keyword after the command.\nExample: `find “John Doe”`",
           });
           return;
         }
@@ -121,7 +120,7 @@ export const connectToWhatsApp = async () => {
         await sock.sendMessage(
           noWa,
           {
-            text: `Shappp, mencari ${query} ...`,
+            text: `Searching for "${query}"...`,
           },
           { quoted: messages[0] }
         );
